@@ -46,7 +46,7 @@
 
     // 箱を作成
     var geometry = new THREE.BoxGeometry(1, 1, 1);
-    var material = new THREE.MeshPhongMaterial({ color: 0x9265ff });
+    var material = new THREE.MeshPhongMaterial({ color: 0x9265ff,ambient:0x990000,specular:0xffff00,shininess:30, metal:true});
 
     var box = new THREE.Mesh(geometry, material);
     box.position.z = (0,0,0);
@@ -63,7 +63,7 @@
     //角錐～円錐
     var coneGeometry = new THREE.ConeGeometry(0.5,1,5);
 
-    var coneMaterial = new THREE.MeshPhongMaterial({color:0xff69b4}); 
+    var coneMaterial = new THREE.MeshPhongMaterial({color:0xff69b4,ambient:0x990000,specular:0xffff00,shininess:30, metal:true}); 
     var cone=new THREE.Mesh(coneGeometry,coneMaterial);
     cone.position.set(-1,0,0);
 
@@ -72,7 +72,7 @@
     //角柱～円柱（角錐台～円錐台）
     var cylinderGeometry = new THREE.CylinderGeometry(0.3,0.5,1,8);
 
-    var cylinderMaterial = new THREE.MeshPhongMaterial({color:0xffd700});
+    var cylinderMaterial = new THREE.MeshPhongMaterial({color:0xffd700,ambient:0x990000,specular:0xffff00,shininess:30, metal:true});
     var cylinder = new THREE.Mesh(cylinderGeometry,cylinderMaterial);
     cylinder.position.set(1,0,0);
     scene.add(cylinder);
@@ -89,7 +89,7 @@
     //ドーナッツ
     var torusGeometry = new THREE.TorusGeometry(0.5,0.2,6,12);
 
-    var torusMaterial = new THREE.MeshPhongMaterial({color:0x6969ff});
+    var torusMaterial = new THREE.MeshPhongMaterial({color:0x6969ff,ambient:0x990000,specular:0xffff00,shininess:30, metal:true});
     var torus = new THREE.Mesh(torusGeometry,torusMaterial);
     torus.position.set(-1,0,-1);
     scene.add(torus);
@@ -97,12 +97,46 @@
     //なんかクネクネしてるやつ
     var torusKnotGeometry = new THREE.TorusKnotGeometry(1.5,0.3,20,6,3,2);
 
-    var torusKnotMaterial = new THREE.MeshPhongMaterial({color:0xff4500,writeframe:true});
+    var torusKnotMaterial = new THREE.MeshPhongMaterial({color:0xff4500,wireframe:true});
     var torusKnot = new THREE.Mesh(torusKnotGeometry,torusKnotMaterial);
     torusKnot.position.set(1,0,-1);
     scene.add(torusKnot);
 
-    // 平行光源1
+    // グループを作る
+    const group = new THREE.Group();
+    // 3D空間にグループを追加する
+    scene.add(group);
+
+  for (let i = 0; i < 10; i++) {
+    // 球体を作成
+    const material = new THREE.MeshNormalMaterial();
+    const geometry = new THREE.SphereGeometry(10, 10, 10);
+    const mesh = new THREE.Mesh(geometry, material);
+
+    // 配置座標を計算
+    const radian = i / 10 * Math.PI * 2;
+    mesh.position.set(
+      10 * Math.cos(radian), // X座標
+      10, // Y座標
+      10 * Math.sin(radian) // Z座標
+    );
+
+    // グループに追加する
+    group.add(mesh);
+  }
+
+    tick();
+
+  // 毎フレーム時に実行されるループイベントです
+  function tick() {
+    group.rotation.y += 0.01;
+
+    // レンダリング
+    renderer.render(scene, camera);
+    requestAnimationFrame(tick);
+  }
+
+    // 平行光源1s
     var directionalLight1 = new THREE.DirectionalLight(0xffffff);
     directionalLight1.position.set(1, 1, 1);
     // シーンに追加
