@@ -52,14 +52,55 @@
     box.position.z = (0,0,0);
     scene.add(box);
 
-    //平面を作成
+     //平面を作成
     var geometry=new THREE.PlaneGeometry(1,2,3);
     var material=new THREE.MeshPhongMaterial({color:0x00ff00,side:THREE.DoubleSide});
   
     var plane=new THREE.Mesh(geometry,material);
-      plane.position.z=(0,0,0);
+      plane.position.z=(0,0,-1);
       scene.add(plane);
-    
+      
+    //角錐～円錐
+    var coneGeometry = new THREE.ConeGeometry(0.5,1,5);
+
+    var coneMaterial = new THREE.MeshPhongMaterial({color:0xff69b4}); 
+    var cone=new THREE.Mesh(coneGeometry,coneMaterial);
+    cone.position.set(-1,0,0);
+
+    scene.add(cone);
+
+    //角柱～円柱（角錐台～円錐台）
+    var cylinderGeometry = new THREE.CylinderGeometry(0.3,0.5,1,8);
+
+    var cylinderMaterial = new THREE.MeshPhongMaterial({color:0xffd700});
+    var cylinder = new THREE.Mesh(cylinderGeometry,cylinderMaterial);
+    cylinder.position.set(1,0,0);
+    scene.add(cylinder);
+
+    //球
+    var sphereGeometry = new THREE.SphereGeometry(0.5,32,32);
+
+    var sphereMaterial = new THREE.MeshPhongMaterial({color:0x00ffff,wireframe:true});
+
+    var sphere = new THREE.Mesh(sphereGeometry,sphereMaterial);
+    sphere.position.set(0,0,1);
+    scene.add(sphere);
+
+    //ドーナッツ
+    var torusGeometry = new THREE.TorusGeometry(0.5,0.2,6,12);
+
+    var torusMaterial = new THREE.MeshPhongMaterial({color:0x6969ff});
+    var torus = new THREE.Mesh(torusGeometry,torusMaterial);
+    torus.position.set(-1,0,-1);
+    scene.add(torus);
+
+    //なんかクネクネしてるやつ
+    var torusKnotGeometry = new THREE.TorusKnotGeometry(1.5,0.3,20,6,3,2);
+
+    var torusKnotMaterial = new THREE.MeshPhongMaterial({color:0xff4500,writeframe:true});
+    var torusKnot = new THREE.Mesh(torusKnotGeometry,torusKnotMaterial);
+    torusKnot.position.set(1,0,-1);
+    scene.add(torusKnot);
 
     // 平行光源1
     var directionalLight1 = new THREE.DirectionalLight(0xffffff);
@@ -82,13 +123,44 @@
     function update () {
 
       // レンダリング
-          renderer.render(scene, camera);
-          requestAnimationFrame(update);
+      renderer.render(scene, camera);
+      requestAnimationFrame(update);
 
-      // 箱を回転させる
+      // 箱の回転・縮小
       box.rotation.x += 0.01;
       box.rotation.y += 0.01;
-  
+      box.scale.set(0.5,0.5,0.5);
+
+      // 平面の回転・縮小
+      plane.rotation.x += 0.01;
+      plane.rotation.y += 0.01;
+      plane.scale.set(0.5,0.5,0.5);
+
+      // 角錐～円錐の回転・縮小
+      cone.rotation.x += 0.01;
+      cone.rotation.y += 0.01;
+      cone.scale.set(0.5,0.5,0.5);
+
+      // 角柱～円柱（角錐台～円錐台）の回転・縮小
+      cylinder.rotation.x += 0.01;
+      cylinder.rotation.y += 0.01;
+      cylinder.scale.set(0.5,0.5,0.5);
+
+      // 球の回転・縮小
+      sphere.rotation.x += 0.01;
+      sphere.rotation.y += 0.01;
+      sphere.scale.set(0.5,0.5,0.5);
+
+      // ドーナッツの回転・縮小
+      torus.rotation.x += 0.01;
+      torus.rotation.y += 0.01;
+      torus.scale.set(0.5,0.5,0.5);
+
+      // なんかクネクネしてるやつの回転・縮小
+      torusKnot.rotation.x += 0.01;
+      torusKnot.rotation.y += 0.01;
+      torusKnot.scale.set(0.25,0.25,0.25);
+
       renderer.render(scene, camera);
     };
     update();
